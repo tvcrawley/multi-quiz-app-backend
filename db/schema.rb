@@ -10,10 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_22_162811) do
+ActiveRecord::Schema.define(version: 2021_07_24_144030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "answer_options", force: :cascade do |t|
+    t.string "answer_text"
+    t.bigint "question_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["question_id"], name: "index_answer_options_on_question_id"
+  end
+
+  create_table "question_responses", force: :cascade do |t|
+    t.bigint "answer_option_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["answer_option_id"], name: "index_question_responses_on_answer_option_id"
+    t.index ["user_id"], name: "index_question_responses_on_user_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.string "question_text"
+    t.string "image"
+    t.bigint "quiz_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
+  end
+
+  create_table "quizzes", force: :cascade do |t|
+    t.string "name"
+    t.string "image"
+    t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email"
@@ -23,4 +57,8 @@ ActiveRecord::Schema.define(version: 2021_07_22_162811) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "answer_options", "questions"
+  add_foreign_key "question_responses", "answer_options"
+  add_foreign_key "question_responses", "users"
+  add_foreign_key "questions", "quizzes"
 end

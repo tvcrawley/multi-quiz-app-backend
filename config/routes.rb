@@ -9,5 +9,6 @@ Rails.application.routes.draw do
 
   get '/quizzes/:id/questions', to: 'questions#index'
   get '/questions/:id/answer_options', to: 'answer_options#index'
+  get '/question_responses/:quiz_id', to: 'question_responses#index'
   post '/question_responses', to: 'question_responses#create'
 end

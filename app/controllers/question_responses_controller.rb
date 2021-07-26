@@ -1,4 +1,12 @@
 class QuestionResponsesController < ApplicationController
+    def index
+        user_responses = User.find(1).question_responses
+        quiz_responses = user_responses.filter {|res| res.question.quiz_id == params[:quiz_id].to_i}
+        correct_answers = quiz_responses.filter {|response| response.answer_option.correct_answer}
+
+        render json: correct_answers.count
+    end
+
     def create
         requestData = JSON.parse(request.body.read)
         user_id = User.find_by({ email: requestData["userEmail"] }).id

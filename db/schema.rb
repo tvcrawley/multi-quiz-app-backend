@@ -26,9 +26,11 @@ ActiveRecord::Schema.define(version: 2021_07_24_144030) do
   create_table "question_responses", force: :cascade do |t|
     t.bigint "answer_option_id", null: false
     t.bigint "user_id", null: false
+    t.bigint "question_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["answer_option_id"], name: "index_question_responses_on_answer_option_id"
+    t.index ["question_id"], name: "index_question_responses_on_question_id"
     t.index ["user_id"], name: "index_question_responses_on_user_id"
   end
 
@@ -59,6 +61,7 @@ ActiveRecord::Schema.define(version: 2021_07_24_144030) do
 
   add_foreign_key "answer_options", "questions"
   add_foreign_key "question_responses", "answer_options"
+  add_foreign_key "question_responses", "questions"
   add_foreign_key "question_responses", "users"
   add_foreign_key "questions", "quizzes"
 end
